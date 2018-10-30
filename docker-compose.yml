@@ -1,0 +1,32 @@
+version: '2'
+services:
+  freeswitch:
+    build:
+      context: ./Freeswitch
+    ports:
+      - "5060:5060/tcp"
+      - "5060:5060/udp"
+      - "5080:5080/tcp"
+      - "5080:5080/udp"
+      - "8021:8021/tcp"
+      - "7443:7443/tcp"
+      - "60535-61000:60535-61000/udp"
+    volumes:
+      - "./Freeswitch/tts:/tts_files"
+      - "./Freeswitch/freeswitch:/etc/freeswitch"
+  rabbitmq:
+    build:
+      context: ./RabbitMQ
+    ports:
+      - "5672:5672/tcp"
+      - "15672:15672/tcp"
+      - "25672:25672/tcp"
+  postgresql:
+    build:
+      context: ./Postgresql
+    environment:
+      POSTGRES_PASSWORD: dbpass
+    ports:
+      - "5432:5432/tcp"
+    volumes:
+      - "./Postgresql/data:/var/lib/postgresql/data"
